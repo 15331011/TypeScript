@@ -57,6 +57,5 @@ module.exports = {
   devServer: {
     // target: 'http://42.192.223.81',//应为内网网址，代理到内网服务器
     port: 3000, // 端口
-    host: '42.192.223.81'
   },
 };
