@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path");
-const miniCssExtractPlugin = require("mini-css-extract-plugin");
-
+// const miniCssExtractPlugin = require("mini-css-extract-plugin");
+const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const resolve = dir => {
   return path.join(__dirname, dir);
 };
-
+const productionGzipExtensions = ["js", "css"]
 // 线上打包路径，请根据项目实际线上情况
 const BASE_URL = process.env.NODE_ENV === "production" ? "./" : "./";
 console.log(BASE_URL)
@@ -24,12 +24,22 @@ module.exports = {
   },
   configureWebpack: config => {
     // 解决chunk 0 [mini-css-extract-plugin]报错（css文件顺序不一致引起的）
-    const miniCssExtractPlugin = config.plugins.find(
-      plugin => plugin.constructor.name === "MiniCssExtractPlugin"
+    // const miniCssExtractPlugin = config.plugins.find(
+    //   plugin => plugin.constructor.name === "MiniCssExtractPlugin"
+    // );
+    // if (miniCssExtractPlugin) {
+    //   miniCssExtractPlugin.options.ignoreOrder = true;
+    // }
+    config.plugins.push(
+      new CompressionWebpackPlugin({
+        filename: "[path].gzip[query]", // 提示compression-webpack-plugin@2.0.0的话filename改为asset
+        algorithm: "gzip",
+        test: new RegExp("\\.(" + productionGzipExtensions.join("|") + ")$"),
+        threshold: 10240, //内容超过10KB进行压缩
+        minRatio: 0.8
+      })
     );
-    if (miniCssExtractPlugin) {
-      miniCssExtractPlugin.options.ignoreOrder = true;
-    }
+
     if (process.env.NODE_ENV === "production") {
       config.devtool = "#source-map";
       config.optimization.splitChunks = {
@@ -38,12 +48,6 @@ module.exports = {
       };
       config.output.chunkFilename = "js/[name].[chunkhash:8].js";
       // console.log(config.plugins["MiniCssExtractPlugin"]);
-      const miniCssExtractPlugin = config.plugins.find(
-        plugin => plugin.constructor.name === "MiniCssExtractPlugin"
-      );
-      if (miniCssExtractPlugin) {
-        miniCssExtractPlugin.options.ignoreOrder = true;
-      }
     } else {
       config.devtool = "cheap-module-eval-source-map";
     }
