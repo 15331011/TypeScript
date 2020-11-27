@@ -1,3 +1,12 @@
+declare type Methods =
+    | "GET"
+    | "OPTIONS"
+    | "HEAD"
+    | "POST"
+    | "PUT"
+    | "DELETE"
+    | "TRACE"
+    | "CONNECT";
 const enumInit = <T>(arg: Array<T>): Array<T> => {
   enum status {
     start = 1,
@@ -199,6 +208,112 @@ function typeReduction() {
   fun1 = fun2;
   console.log(fun1);
 }
+function interfaceAndClass() {
+  interface SquareConfig {
+    color: string;
+    width: number;
+    age: number;
+  }
+  function createSquare(config: SquareConfig) {
+    let newSquare: SquareConfig;
+    newSquare = config;
+  }
+  let tempObj = {
+    color: "blue",
+    width: 100,
+    age: 121,
+    adsada: "asdad"
+  };
+  let mySquare = createSquare({
+    color: "blue",
+    width: 100,
+    age: 121,
+    adsada: "asdad"
+  } as SquareConfig);
+  console.log(mySquare);
+}
+function indexableType() {
+  interface indexable {
+    [index: number]: string;
+  }
+  class Animal {
+    name: string;
+    constructor(name: string) {
+      this.name = name;
+    }
+  }
+  class Dog extends Animal {
+    breed: string;
+    constructor(breed: string) {
+      super("12");
+      this.breed = breed;
+    }
+  }
+  interface NotKey {
+    [x: string]: Dog;
+    [y: number]: Dog;
+  }
+  interface randomTest {
+    [x: string]: string;
+  }
+  let mmm: randomTest = { "1": "ada", 2: "12" };
+  console.log(mmm[2]);
+  interface Shape {
+    color: string;
+  }
+  interface penStroke {
+    penWidth: number;
+  }
+  // 继承
+  interface Square extends Shape, penStroke {
+    sideLength: number;
+  }
+  let square = <Square>{};
+  square.color = "blue";
+  square.sideLength = 1.0;
+  square.penWidth = 5.0;
+  console.log(square);
+
+  class sqqquare implements penStroke {
+    penWidth: number;
+    setPenWidth(width: number) {
+      this.penWidth = width;
+    }
+    constructor(width: number) {
+      this.penWidth = width;
+    }
+  }
+  let sqqqqq = <sqqquare>{};
+  console.log(sqqqqq);
+}
+function formatDate (date: any, fmt: string){
+  let time = "";
+  const o: any = {
+    "M+": date.getMonth() + 1, // 月份
+    "d+": date.getDate(), // 日
+    "H+": date.getHours(), // 小时
+    "m+": date.getMinutes(), // 分
+    "s+": date.getSeconds(), // 秒
+    "q+": Math.floor((date.getMonth() + 3) / 3), // 季度
+    S: date.getMilliseconds() // 毫秒
+  };
+  if (/(y+)/.test(fmt)) {
+    time = fmt.replace(
+        RegExp.$1,
+        (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+    );
+  }
+  for (const k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      time = time.replace(
+          RegExp.$1,
+          RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)
+      );
+    }
+  }
+  console.log(time)
+  return time;
+};
 export {
   enumInit,
   symbolInit,
@@ -208,5 +323,8 @@ export {
   INTERFACE,
   alias,
   pluckPlus,
-  typeReduction
+  typeReduction,
+  interfaceAndClass,
+  indexableType,
+  formatDate
 };

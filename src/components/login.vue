@@ -15,7 +15,10 @@ import {
   INTERFACE,
   alias,
   pluckPlus,
-  typeReduction
+  typeReduction,
+  interfaceAndClass,
+  indexableType,
+  formatDate
 } from "@/lib/login.ts";
 export default {
   data() {
@@ -38,6 +41,9 @@ export default {
     alias();
     pluckPlus();
     typeReduction();
+    interfaceAndClass();
+    indexableType();
+    formatDate(new Date(),'yyyy-dd-mm');
   }
 };
 </script>
