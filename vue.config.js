@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require("path");
-// const miniCssExtractPlugin = require("mini-css-extract-plugin");
+const miniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const resolve = dir => {
   return path.join(__dirname, dir);
