@@ -35,7 +35,7 @@ module.exports = {
         filename: "[path].gzip[query]", // 提示compression-webpack-plugin@2.0.0的话filename改为asset
         algorithm: "gzip",
         test: new RegExp("\\.(" + productionGzipExtensions.join("|") + ")$"),
-        threshold: 10240, //内容超过10KB进行压缩
+        threshold: 1, //内容超过10KB进行压缩
         minRatio: 0.8
       })
     );
